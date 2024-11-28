@@ -87,13 +87,15 @@ def face_detect(images):
 	results = []
 	pady1, pady2, padx1, padx2 = args.pads
 	for rect, image in zip(predictions, images):
-
-		y1 = max(0, rect[1] - pady1)
-		y2 = min(image.shape[0], rect[3] + pady2)
-		x1 = max(0, rect[0] - padx1)
-		x2 = min(image.shape[1], rect[2] + padx2)
-		
-		results.append([x1, y1, x2, y2])
+		if rect is None:
+			results.append([0, 0, 0.002, 0.002])
+		else:
+			y1 = max(0, rect[1] - pady1)
+			y2 = min(image.shape[0], rect[3] + pady2)
+			x1 = max(0, rect[0] - padx1)
+			x2 = min(image.shape[1], rect[2] + padx2)
+			
+			results.append([x1, y1, x2, y2])
 
 	boxes = np.array(results)
 	if not args.nosmooth: boxes = get_smoothened_boxes(boxes, T=5)

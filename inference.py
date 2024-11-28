@@ -88,7 +88,7 @@ def face_detect(images):
 	pady1, pady2, padx1, padx2 = args.pads
 	for rect, image in zip(predictions, images):
 		if rect is None:
-			results.append([0, 0, 0.002, 0.002])
+			results.append([0, 0, 1, 1])
 		else:
 			y1 = max(0, rect[1] - pady1)
 			y2 = min(image.shape[0], rect[3] + pady2)

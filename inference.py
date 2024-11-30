@@ -99,7 +99,7 @@ def face_detect(images):
 					x1 = max(0, rect[0] - padx1)
 					x2 = min(image.shape[1], rect[2] + padx2)
 
-					face = np.array(images[i:i + batch_size])[y1:y2, x1:x2]
+					face = images[i:i + batch_size][y1:y2, x1:x2]
 					print('###########shape:', face.shape)
 					
 					

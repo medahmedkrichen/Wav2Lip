@@ -67,12 +67,12 @@ def get_smoothened_boxes(boxes, T):
 		boxes[i] = np.mean(window, axis=0)
 	return boxes
 
-def cosine_similarity(image1_path, image2_path):
-    embedding1 = DeepFace.represent(img_path=image1_path, model_name="Facenet")[0]["embedding"]
-    embedding2 = DeepFace.represent(img_path=image2_path, model_name="Facenet")[0]["embedding"]
+def cosine_similarity(image1_path, embedding2):
    
+    embedding1 = DeepFace.represent(img_path=image2_path, model_name="OpenFace")[0]["embedding"]
+   
+    
     embedding1 = np.array(embedding1)
-    embedding2 = np.array(embedding2)
     return np.dot(embedding1, embedding2) / (np.linalg.norm(embedding1) * np.linalg.norm(embedding2))
 
 def face_detect(images):
@@ -103,12 +103,15 @@ def face_detect(images):
 					filename = 'savedImage.jpg'
 					cv2.imwrite(filename, face)
 					
+					embedding2 = DeepFace.represent(img_path=filename, model_name="OpenFace")[0]["embedding"]
+					embedding2 = np.array(embedding2)
+					
 					supposed_speaker = frame_per_speaker[i]
 					speaking_speaker = "SPEAKER_00"
 					best_socre = 0
 					for speaker in os.listdir("speaker_images"):
-						if cosine_similarity(f"speaker_images/{speaker}/max_image.jpg", filename)  > best_socre:
-							best_socre = cosine_similarity(f"speaker_images/{speaker}/max_image.jpg", filename) 
+						if cosine_similarity(f"speaker_images/{speaker}/max_image.jpg", embedding2)  > best_socre:
+							best_socre = cosine_similarity(f"speaker_images/{speaker}/max_image.jpg", embedding2) 
 							speaking_speaker = speaker
 					print(speaking_speaker)
 					os.remove(filename)

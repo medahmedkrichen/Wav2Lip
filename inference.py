@@ -94,7 +94,7 @@ def face_detect(images):
 				else:	
 					rect = rect[0]
 					supposed_speaker = frame_per_speaker[i]
-					if i % 20 == 0:
+					if i % 25 == 0:
 						try:
 							image = np.array(images[i:i + batch_size])[0]
 							y1 = max(0, rect[1] - pady1)
@@ -111,7 +111,6 @@ def face_detect(images):
 								if cosine_similarity(f"speaker_images/{speaker}/max_image.jpg", embedding2)  > best_socre:
 									best_socre = cosine_similarity(f"speaker_images/{speaker}/max_image.jpg", embedding2) 
 									speaking_speaker = speaker
-							print(speaking_speaker)
 						except:
 							pass
 					if speaking_speaker==supposed_speaker:

@@ -89,7 +89,7 @@ def face_detect(images):
 		predictions = []
 		try:
 			for i in tqdm(range(0, len(images), batch_size)):
-				rect = detector.get_detections_for_batch(np.array(images[i:i + batch_size]))
+				rect = detector.get_detections_for_batch(np.array(images[i:i + batch_size]))[0]
 				if rect is None:
 					predictions.extend(None)
 				else:
@@ -108,7 +108,7 @@ def face_detect(images):
 							best_socre = SSIM_similarity("speaker_images/{speaker}/average_image.jpg", face) 
 							speaking_speaker = speaker
 					if speaking_speaker==supposed_speaker:
-						predictions.extend(rect)
+						predictions.extend(set(rect))
 					else:
 						predictions.extend(None)
 		except RuntimeError:

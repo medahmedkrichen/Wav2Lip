@@ -112,6 +112,7 @@ def face_detect(images):
 						if SSIM_similarity(f"speaker_images/{speaker}/max_image.jpg", face)  > best_socre:
 							best_socre = SSIM_similarity(f"speaker_images/{speaker}/max_image.jpg", face) 
 							speaking_speaker = speaker
+					print(speaking_speaker)
 					if speaking_speaker==supposed_speaker:
 						predictions.extend([rect])
 					else:

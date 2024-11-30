@@ -8,6 +8,7 @@ import torch, face_detection
 from models import Wav2Lip
 import platform
 from skimage import metrics
+from deepface import DeepFace
 
 parser = argparse.ArgumentParser(description='Inference code to lip-sync videos in the wild using Wav2Lip models')
 

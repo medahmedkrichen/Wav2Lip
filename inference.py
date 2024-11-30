@@ -93,10 +93,11 @@ def face_detect(images):
 				if rect is None:
 					predictions.extend(None)
 				else:
-					y1 = max(0, rect[1] - pady1)
-					y2 = min(image.shape[0], rect[3] + pady2)
-					x1 = max(0, rect[0] - padx1)
-					x2 = min(image.shape[1], rect[2] + padx2)
+					print("######: ",rect)
+					y1 = rect[1]
+					y2 = rect[3]
+					x1 = rect[0]
+					x2 = rect[2]
 				
 					face = img[y1:y2, x1:x2]
 					supposed_speaker = frame_per_speaker[i]

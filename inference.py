@@ -69,7 +69,7 @@ def get_smoothened_boxes(boxes, T):
 
 def cosine_similarity(image1_path, embedding2):
    
-    embedding1 = DeepFace.represent(img_path=image2_path, model_name="OpenFace")[0]["embedding"]
+    embedding1 = DeepFace.represent(img_path=image1_path, model_name="OpenFace")[0]["embedding"]
    
     
     embedding1 = np.array(embedding1)

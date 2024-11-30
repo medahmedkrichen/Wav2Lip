@@ -97,7 +97,7 @@ def face_detect(images):
 					y2 = rect[3]
 					x1 = rect[0]
 					x2 = rect[2]
-				
+					print("######: ",rect)
 					face = images[i:i + batch_size][y1:y2, x1:x2]
 					supposed_speaker = frame_per_speaker[i]
 					speaking_speaker = "SPEAKER_00"

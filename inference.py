@@ -91,28 +91,25 @@ def face_detect(images):
 			for i in tqdm(range(0, len(images), batch_size)):
 				rect = detector.get_detections_for_batch(np.array(images[i:i + batch_size]))
 				if rect is None:
-					y1 = 0
-					y2 = 1
-					x1 = 0
-					x2 = 1
+					predictions.extend(None)
 				else:
 					y1 = max(0, rect[1] - pady1)
 					y2 = min(image.shape[0], rect[3] + pady2)
 					x1 = max(0, rect[0] - padx1)
 					x2 = min(image.shape[1], rect[2] + padx2)
 				
-				face = img[y1:y2, x1:x2]
-				supposed_speaker = frame_per_speaker[i]
-				speaking_speaker = "SPEAKER_00"
-				best_socre = 0
-				for speaker in os.listdir("speaker_images"):
-					if SSIM_similarity(image1_path, image2_path) > best_socre:
-						best_socre = SSIM_similarity("speaker_images/{speaker}/average_image.jpg", face) 
-						speaking_speaker = speaker
-				if speaking_speaker==supposed_speaker:
-					predictions.extend(rect)
-				else:
-					predictions.extend(None)
+					face = img[y1:y2, x1:x2]
+					supposed_speaker = frame_per_speaker[i]
+					speaking_speaker = "SPEAKER_00"
+					best_socre = 0
+					for speaker in os.listdir("speaker_images"):
+						if SSIM_similarity(image1_path, image2_path) > best_socre:
+							best_socre = SSIM_similarity("speaker_images/{speaker}/average_image.jpg", face) 
+							speaking_speaker = speaker
+					if speaking_speaker==supposed_speaker:
+						predictions.extend(rect)
+					else:
+						predictions.extend(None)
 		except RuntimeError:
 			if batch_size == 1: 
 				raise RuntimeError('Image too big to run face detection on GPU. Please use the --resize_factor argument')

@@ -93,7 +93,6 @@ def face_detect(images):
 				if rect is None:
 					predictions.extend(None)
 				else:
-					print("######: ",rect)
 					y1 = rect[1]
 					y2 = rect[3]
 					x1 = rect[0]

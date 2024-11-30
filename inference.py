@@ -99,6 +99,9 @@ def face_detect(images):
 					x2 = rect[2]
 				
 					face = np.array(images[i:i + batch_size])[y1:y2, x1:x2]
+					print('###########size:', face.size)
+					print('###########shape:', face.shape)
+					
 					supposed_speaker = frame_per_speaker[i]
 					speaking_speaker = "SPEAKER_00"
 					best_socre = 0

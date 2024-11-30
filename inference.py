@@ -93,6 +93,7 @@ def face_detect(images):
 				if rect is None:
 					predictions.extend(None)
 				else:
+					image = np.array(images[i:i + batch_size])
 					y1 = max(0, rect[1] - pady1)
 					y2 = min(image.shape[0], rect[3] + pady2)
 					x1 = max(0, rect[0] - padx1)

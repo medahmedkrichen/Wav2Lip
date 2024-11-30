@@ -98,9 +98,10 @@ def face_detect(images):
 					y2 = min(image.shape[0], rect[3] + pady2)
 					x1 = max(0, rect[0] - padx1)
 					x2 = min(image.shape[1], rect[2] + padx2)
-					print('#######: ',y1,y2,x1,x2)
-					print('#####:',type(y1))
+				
 					face = images[i:i + batch_size]
+					print('###########type:', type(face))
+					print('###########face:', face)
 					face = face[y1:y2, x1:x2]
 					print('###########shape:', face.shape)
 					

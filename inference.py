@@ -91,7 +91,7 @@ def face_detect(images):
 			for i in tqdm(range(0, len(images), batch_size)):
 				rect = list(detector.get_detections_for_batch(np.array(images[i:i + batch_size]))[0])
 				if rect is None:
-					predictions.extend(None)
+					predictions.extend([None])
 				else:
 					image = np.array(images[i:i + batch_size])[0]
 					y1 = max(0, rect[1] - pady1)
@@ -100,9 +100,7 @@ def face_detect(images):
 					x2 = min(image.shape[1], rect[2] + padx2)
 				
 					face = np.array(images[i:i + batch_size])[0]
-					print('###########type:', type(face))
 					face = face[y1:y2, x1:x2]
-					print('###########shape:', face.shape)
 					
 					
 					supposed_speaker = frame_per_speaker[i]
@@ -115,7 +113,7 @@ def face_detect(images):
 					if speaking_speaker==supposed_speaker:
 						predictions.extend(set(rect))
 					else:
-						predictions.extend(None)
+						predictions.extend([None])
 		except RuntimeError:
 			if batch_size == 1: 
 				raise RuntimeError('Image too big to run face detection on GPU. Please use the --resize_factor argument')

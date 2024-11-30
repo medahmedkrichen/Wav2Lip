@@ -65,17 +65,55 @@ def get_smoothened_boxes(boxes, T):
 		boxes[i] = np.mean(window, axis=0)
 	return boxes
 
+def SSIM_similarity(image1_path, image2):
+    image1 = cv2.imread(image1_path)
+    
+
+    # Load images
+    image2 = cv2.resize(image2, (image1.shape[1], image1.shape[0]), interpolation = cv2.INTER_AREA)
+    # Convert images to grayscale
+    image1_gray = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
+    image2_gray = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
+    # Calculate SSIM
+    ssim_score = metrics.structural_similarity(image1_gray, image2_gray, full=True)
+    return ssim_score[0]
+
 def face_detect(images):
 	detector = face_detection.FaceAlignment(face_detection.LandmarksType._2D, 
 											flip_input=False, device=device)
 
 	batch_size = args.face_det_batch_size
-	
+	with open('frame_per_speaker.json', 'r') as f:
+    		frame_per_speaker = json.load(f)
 	while 1:
 		predictions = []
 		try:
 			for i in tqdm(range(0, len(images), batch_size)):
-				predictions.extend(detector.get_detections_for_batch(np.array(images[i:i + batch_size])))
+				rect = detector.get_detections_for_batch(np.array(images[i:i + batch_size]))
+				if rect is None:
+					y1 = 0
+					y2 = 1
+					x1 = 0
+					x2 = 1
+				else:
+					y1 = max(0, rect[1] - pady1)
+					y2 = min(image.shape[0], rect[3] + pady2)
+					x1 = max(0, rect[0] - padx1)
+					x2 = min(image.shape[1], rect[2] + padx2)
+				
+				face = img[y1:y2, x1:x2]
+				supposed_speaker = frame_per_speaker[i]
+				speaking_speaker = "SPEAKER_00"
+				best_socre = 0
+				for speaker in os.listdir("speaker_images"):
+					if f"speaker_images/{speaker}/average_image.jpg"
+						if SSIM_similarity(image1_path, image2_path) > best_socre:
+							best_socre = SSIM_similarity("speaker_images/{speaker}/average_image.jpg", face) 
+							speaking_speaker = speaker
+				if speaking_speaker==supposed_speaker:
+					predictions.extend(rect)
+				else:
+					predictions.extend(None)
 		except RuntimeError:
 			if batch_size == 1: 
 				raise RuntimeError('Image too big to run face detection on GPU. Please use the --resize_factor argument')

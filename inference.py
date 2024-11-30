@@ -89,7 +89,7 @@ def face_detect(images):
 		predictions = []
 		try:
 			for i in tqdm(range(0, len(images), batch_size)):
-				rect = detector.get_detections_for_batch(np.array(images[i:i + batch_size]))[0]
+				rect = list(detector.get_detections_for_batch(np.array(images[i:i + batch_size]))[0])
 				if rect is None:
 					predictions.extend(None)
 				else:

@@ -68,7 +68,7 @@ def get_smoothened_boxes(boxes, T):
 
 def SSIM_similarity(image1_path, image2):
     image1 = cv2.imread(image1_path)
-    
+    print("####image1", image1.shape)
 
     # Load images
     image2 = cv2.resize(image2, (image1.shape[1], image1.shape[0]), interpolation = cv2.INTER_AREA)

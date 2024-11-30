@@ -112,7 +112,7 @@ def face_detect(images):
 							best_socre = SSIM_similarity(f"speaker_images/{speaker}/average_image.jpg", face) 
 							speaking_speaker = speaker
 					if speaking_speaker==supposed_speaker:
-						predictions.extend(set(rect))
+						predictions.extend([rect])
 					else:
 						predictions.extend([None])
 		except RuntimeError:

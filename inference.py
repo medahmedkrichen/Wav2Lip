@@ -68,8 +68,6 @@ def get_smoothened_boxes(boxes, T):
 
 def SSIM_similarity(image1_path, image2):
     image1 = cv2.imread(image1_path)
-    print("####image1", image1.shape)
-
     # Load images
     image2 = cv2.resize(image2, (image1.shape[1], image1.shape[0]), interpolation = cv2.INTER_AREA)
     # Convert images to grayscale
@@ -98,10 +96,11 @@ def face_detect(images):
 					y2 = rect[3]
 					x1 = rect[0]
 					x2 = rect[2]
-				
+
+					print(x1,y1,x2,y2)
+					print('###########shape:', np.array(images[i:i + batch_size]).shape)
 					face = np.array(images[i:i + batch_size])[y1:y2, x1:x2]
-					print('###########size:', face.size)
-					print('###########shape:', face.shape)
+					
 					
 					supposed_speaker = frame_per_speaker[i]
 					speaking_speaker = "SPEAKER_00"

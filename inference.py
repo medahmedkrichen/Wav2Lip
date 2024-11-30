@@ -102,18 +102,22 @@ def face_detect(images):
 					face = face[y1:y2, x1:x2]
 					"""filename = 'savedImage.jpg'
 					cv2.imwrite(filename, face)"""
-					
-					embedding2 = DeepFace.represent(img_path=face, model_name="OpenFace")[0]["embedding"]
-					embedding2 = np.array(embedding2)
-					
 					supposed_speaker = frame_per_speaker[i]
 					speaking_speaker = "SPEAKER_00"
-					best_socre = 0
-					for speaker in os.listdir("speaker_images"):
-						if cosine_similarity(f"speaker_images/{speaker}/max_image.jpg", embedding2)  > best_socre:
-							best_socre = cosine_similarity(f"speaker_images/{speaker}/max_image.jpg", embedding2) 
-							speaking_speaker = speaker
-					print(speaking_speaker)
+					try:
+						embedding2 = DeepFace.represent(img_path=face, model_name="OpenFace")[0]["embedding"]
+						embedding2 = np.array(embedding2)
+						
+						
+						
+						best_socre = 0
+						for speaker in os.listdir("speaker_images"):
+							if cosine_similarity(f"speaker_images/{speaker}/max_image.jpg", embedding2)  > best_socre:
+								best_socre = cosine_similarity(f"speaker_images/{speaker}/max_image.jpg", embedding2) 
+								speaking_speaker = speaker
+						print(speaking_speaker)
+					except:
+						pass
 					# os.remove(filename)
 					if speaking_speaker==supposed_speaker:
 						predictions.extend([rect])

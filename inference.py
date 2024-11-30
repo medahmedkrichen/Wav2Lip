@@ -90,12 +90,10 @@ def face_detect(images):
 		try:
 			for i in tqdm(range(0, len(images), batch_size)):
 				rect = detector.get_detections_for_batch(np.array(images[i:i + batch_size]))
-				if rect is None:
+				if rect[0] is None:
 					predictions.extend([None])
 				else:	
-					print("1111:", rect)
-					rect = list(rect)[0]
-					print("2222:", rect)
+			
 					image = np.array(images[i:i + batch_size])[0]
 					y1 = max(0, rect[1] - pady1)
 					y2 = min(image.shape[0], rect[3] + pady2)

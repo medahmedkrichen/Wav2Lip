@@ -103,8 +103,8 @@ def face_detect(images):
 					speaking_speaker = "SPEAKER_00"
 					best_socre = 0
 					for speaker in os.listdir("speaker_images"):
-						if SSIM_similarity("speaker_images/{speaker}/average_image.jpg", face)  > best_socre:
-							best_socre = SSIM_similarity("speaker_images/{speaker}/average_image.jpg", face) 
+						if SSIM_similarity(f"speaker_images/{speaker}/average_image.jpg", face)  > best_socre:
+							best_socre = SSIM_similarity(f"speaker_images/{speaker}/average_image.jpg", face) 
 							speaking_speaker = speaker
 					if speaking_speaker==supposed_speaker:
 						predictions.extend(set(rect))

@@ -86,20 +86,20 @@ def face_detect(images):
     		frame_per_speaker = json.load(f)
 	while 1:
 		predictions = []
+		pady1, pady2, padx1, padx2 = args.pads
 		try:
 			for i in tqdm(range(0, len(images), batch_size)):
 				rect = list(detector.get_detections_for_batch(np.array(images[i:i + batch_size]))[0])
 				if rect is None:
 					predictions.extend(None)
 				else:
-					y1 = rect[1]
-					y2 = rect[3]
-					x1 = rect[0]
-					x2 = rect[2]
+					y1 = max(0, rect[1] - pady1)
+					y2 = min(image.shape[0], rect[3] + pady2)
+					x1 = max(0, rect[0] - padx1)
+					x2 = min(image.shape[1], rect[2] + padx2)
 
-					print(x1,y1,x2,y2)
-					print('###########shape:', np.array(images[i:i + batch_size]).shape)
 					face = np.array(images[i:i + batch_size])[y1:y2, x1:x2]
+					print('###########shape:', face.shape)
 					
 					
 					supposed_speaker = frame_per_speaker[i]

@@ -86,39 +86,34 @@ def face_detect(images):
 		predictions = []
 		pady1, pady2, padx1, padx2 = args.pads
 		try:
+			speaking_speaker = "SPEAKER_00"
 			for i in tqdm(range(0, len(images), batch_size)):
 				rect = detector.get_detections_for_batch(np.array(images[i:i + batch_size]))
 				if rect[0] is None:
 					predictions.extend([None])
 				else:	
 					rect = rect[0]
-					image = np.array(images[i:i + batch_size])[0]
-					y1 = max(0, rect[1] - pady1)
-					y2 = min(image.shape[0], rect[3] + pady2)
-					x1 = max(0, rect[0] - padx1)
-					x2 = min(image.shape[1], rect[2] + padx2)
-				
-					face = np.array(images[i:i + batch_size])[0]
-					face = face[y1:y2, x1:x2]
-					"""filename = 'savedImage.jpg'
-					cv2.imwrite(filename, face)"""
 					supposed_speaker = frame_per_speaker[i]
-					speaking_speaker = "SPEAKER_00"
-					try:
-						embedding2 = DeepFace.represent(img_path=face, model_name="OpenFace")[0]["embedding"]
-						embedding2 = np.array(embedding2)
-						
-						
-						
-						best_socre = 0
-						for speaker in os.listdir("speaker_images"):
-							if cosine_similarity(f"speaker_images/{speaker}/max_image.jpg", embedding2)  > best_socre:
-								best_socre = cosine_similarity(f"speaker_images/{speaker}/max_image.jpg", embedding2) 
-								speaking_speaker = speaker
-						print(speaking_speaker)
-					except:
-						pass
-					# os.remove(filename)
+					if i % 20 == 0:
+						try:
+							image = np.array(images[i:i + batch_size])[0]
+							y1 = max(0, rect[1] - pady1)
+							y2 = min(image.shape[0], rect[3] + pady2)
+							x1 = max(0, rect[0] - padx1)
+							x2 = min(image.shape[1], rect[2] + padx2)
+							face = np.array(images[i:i + batch_size])[0]
+							face = face[y1:y2, x1:x2]
+							embedding2 = DeepFace.represent(img_path=face, model_name="OpenFace")[0]["embedding"]
+							embedding2 = np.array(embedding2)
+							
+							best_socre = 0
+							for speaker in os.listdir("speaker_images"):
+								if cosine_similarity(f"speaker_images/{speaker}/max_image.jpg", embedding2)  > best_socre:
+									best_socre = cosine_similarity(f"speaker_images/{speaker}/max_image.jpg", embedding2) 
+									speaking_speaker = speaker
+							print(speaking_speaker)
+						except:
+							pass
 					if speaking_speaker==supposed_speaker:
 						predictions.extend([rect])
 					else:

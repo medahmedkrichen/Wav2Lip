@@ -94,7 +94,7 @@ def face_detect(images):
 				else:	
 					rect = rect[0]
 					supposed_speaker = frame_per_speaker[i]
-					if i % 20 == 0:
+					if i % 5 == 0:
 						try:
 							image = np.array(images[i:i + batch_size])[0]
 							y1 = max(0, rect[1] - pady1)
@@ -130,7 +130,7 @@ def face_detect(images):
 	for rect, image in zip(predictions, images):
 		
 		if rect is None:
-			results.append([0, 0, 1, 1])
+			results.append([50, 50, 50, 50])
 		else:
 			
 			y1 = max(0, rect[1] - pady1)

@@ -130,7 +130,7 @@ def face_detect(images):
 	for rect, image in zip(predictions, images):
 		
 		if rect is None:
-			results.append([50, 50, 50, 50])
+			results.append([0, 0, 1, 1])
 		else:
 			
 			y1 = max(0, rect[1] - pady1)
